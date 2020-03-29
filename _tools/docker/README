@@ -3,13 +3,22 @@ REQUIREMENTS: next ports should be free on host machine:
     5433 (pgsql)
 
 
-FIRST INIT (COMMANDS|start in ./AmazonS3static/docker):
+FIRST INIT (COMMANDS|start in ./_tools/docker):
     docker-compose up -d --build
 
 
 DB CONNECTIONS SETUP:
-    pgsql_host: localhost:5433
+    pgsql_host: localhost:5443
         db:         text_analysis_db
         db_test:    text_analysis_test_db
         user:       rev_user
         pass:       rev_pass
+
+
+START BASH IN CONTAINER
+    docker ps    (find name of container)
+    docker exec -it <container name> /bin/bash   (start bash into container)
+
+
+START ANY COMMAND IN CONTAINER
+   docker-compose run <container name> <command>
