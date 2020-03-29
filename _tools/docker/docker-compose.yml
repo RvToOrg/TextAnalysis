@@ -1,0 +1,27 @@
+version: '3'
+services:
+  pgsql:
+    # we use the postgres base image, version 5.6.36
+    build:
+      context: images/pgsql
+    # we mount a datavolume to make sure we don't loose data
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    # setting some envvars to create the DB
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=text_analysis_db,text_analysis_test_db
+      - POSTGRES_USER=rev_user
+      - POSTGRES_PASSWORD=rev_pass
+    networks:
+      - internal
+volumes:
+    pgsql_data:
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
