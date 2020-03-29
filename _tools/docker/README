@@ -1,6 +1,6 @@
 REQUIREMENTS: docker and docker-compose should be installed on host machine
 REQUIREMENTS: next ports should be free on host machine:
-    5433 (pgsql)
+    5443 (pgsql)
 
 
 FIRST INIT (COMMANDS|start in ./_tools/docker):
