@@ -49,3 +49,17 @@ create table analysis_words(
     value varchar(200)
 )
 
+create table word (
+    serial_no number(15,0) primary key,
+    phrase    varchar(100),
+    strong    number(4,0)
+);
+create table chapter (
+    representer varchar(10),
+    chapter_no  number(3,0),
+    word_from   number(15,0),
+    word_to     number(15,0),
+    primary key (representer, chapter_no),
+    foreign key (word_from) references word (serial_no),
+    foreign key (word_to) references word (serial_no)
+);
