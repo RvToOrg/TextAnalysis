@@ -1,6 +1,4 @@
-import http.client
-import zipfile
-import requests
+import requests, zipfile
 import json
 
 
@@ -15,13 +13,14 @@ url = url.replace('1', 'i')
 #GET REGISTRY FROM
 response = requests.get(url,allow_redirects=True)
 
-#UNZIP REGISTRY AND BEAUTIFY JSON STRUCTURE OF REGISTRY
+#UNZIP REGISTRY
 with open(zip_file_target,'wb') as zfile:
     zfile.write(response.content)
 
 with zipfile.ZipFile(zip_file_target, 'r') as zip_reg:
     zip_reg.extractall(zip_registry_extract_target)
 
+#BEAUTIFY JSON STRUCTURE OF REGISTRY
 rfile = open(json_registry_file,'r')
 json_registry_content = json.loads(rfile.read().encode().decode('utf-8-sig'))
 rfile.close()
