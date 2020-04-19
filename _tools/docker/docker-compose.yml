@@ -1,9 +1,14 @@
 version: '3'
 services:
+  py3:
+    build:  images/python
+    volumes:
+      - ../..:/var/app
+    networks:
+      - internal
   rev_pgsql:
     # we use the postgres base image, version 5.6.36
-    build:
-      context: images/pgsql
+    build: images/pgsql
     # we mount a datavolume to make sure we don't loose data
     volumes:
       - ../../:/var/project

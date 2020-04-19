@@ -1,0 +1,4 @@
+python_http_client==3.2.7
+wget==3.2
+zipfile38==0.0.2
+requests==2.23.0

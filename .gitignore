@@ -4,4 +4,5 @@
 out
 gen
 .idea/
-import/mybibleModules
+import/modules
+import/registry
