@@ -1,10 +1,14 @@
 import getopt, sys, os
 import requests, zipfile
 import json
+from pathlib import Path
 
 json_registry_file = './import/registry/registry.json'
 modules_target = './import/modules'
-pg_loader_configs = './import/configs/pg_mod.load'
+pg_loader_configs = './import/tmp/pg_mod.load'
+module_name_replace_symbols_configs = './import/configs/module_name_replace_symbols.json'
+db_configs = './import/configs/db_config.json'
+db_configs = json.loads(open(db_configs,'r').read().encode().decode('utf-8-sig'))
 
 # GET NAME OF MODULE FROM PARAMS
 short_options = "m:r"
@@ -75,11 +79,7 @@ with zipfile.ZipFile(zip_file_target, 'r') as zip_reg:
 
 pg_conn_string = 'psql -h rev_pgsql -p 5432 -U rev_user -w'
 
-replace = {
-    '-':'_MM_',
-    '+':'_PP_',
-    '\'':'_PS_',
-}
+replace = json.loads(open(module_name_replace_symbols_configs,'r').read().encode().decode('utf-8-sig'))
 
 db_name = module_name
 for s in replace:
@@ -91,18 +91,16 @@ print('Create and fill db {} from module {}'.format(db_name,module_name))
 # LOAD MODULE TO PGSQL
 os.system('echo "SELECT \'CREATE DATABASE {}\' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = \'{}\')\gexec" | {}'.format(db_name,db_name,pg_conn_string))
 
-rfile = open(pg_loader_configs,'r')
-pg_conf_content = rfile.read()
-rfile.close()
+Path("import/tmp").mkdir(parents=True, exist_ok=True)
 rfile = open(pg_loader_configs,'w')
-rfile.write(pg_conf_content.format(db_name))
-rfile.close()
-os.system('pgloader import/configs/pg_mod.load')
-rfile = open(pg_loader_configs,'w')
-rfile.write(pg_conf_content)
-rfile.close()
+rfile.write("""load database
+     from sqlite:///var/app/import/modules/.SQLite3
+     into postgresql://{}:{}@{}:{}/{}
 
+ with include drop, create tables, drop indexes, create indexes, reset sequences
 
-# PARSE MODULE VERSE TO WORDS BY STRONG
+  set work_mem to '16MB', maintenance_work_mem to '512 MB';""".format(db_configs['user'],db_configs['pass'],db_configs['host'],db_configs['port'],db_name))
+rfile.close()
+os.system('pgloader import/tmp/pg_mod.load')
 
 
