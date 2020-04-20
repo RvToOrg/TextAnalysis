@@ -1,0 +1,7 @@
+load database
+     from sqlite:///var/app/import/modules/.SQLite3
+     into postgresql://rev_user:rev_pass@rev_pgsql:5432/{}
+
+ with include drop, create tables, drop indexes, create indexes, reset sequences
+
+  set work_mem to '16MB', maintenance_work_mem to '512 MB';

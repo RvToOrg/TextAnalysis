@@ -4,8 +4,11 @@ services:
     build:  images/python
     volumes:
       - ../..:/var/app
+      - root_folder_py3_data:/root/.bash_history
     networks:
       - internal
+    depends_on:
+      - rev_pgsql
   rev_pgsql:
     # we use the postgres base image, version 5.6.36
     build: images/pgsql
@@ -24,6 +27,7 @@ services:
       - internal
 volumes:
     rev_pgsql_data:
+    root_folder_py3_data:
 networks:
   internal:
     driver: bridge
