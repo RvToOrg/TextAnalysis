@@ -25,7 +25,7 @@ module_name = ''
 for current_argument, current_value in arguments:
     if current_argument in ("-m", "--module"):
         module_name = current_value
-        print ("Download and prepare module" + module_name)
+        print ("Download and prepare module " + module_name)
 
 if module_name=='':
     print('Module name is required. Please use -m or --module to specify module name')
@@ -39,18 +39,36 @@ if module_name=='':
 rfile = open(json_registry_file,'r')
 json_registry_content = json.loads(rfile.read().encode().decode('utf-8-sig'))
 modules_list = json_registry_content['downloads']
-source_list =  json_registry_content['registries']
+
+module = {}
+module = [x for x in modules_list if x['abr']==module_name]
+
+if not module:
+    print('Specified module not found in registry')
+    sys.exit(2)
+elif len(module)>1:
+    print('Specified module not unique')
+    sys.exit(2)
+else:
+    module = module[0]
+
 
 
 
 
 #LOAD MODULE TO PGSQL
-
-
+print(module)
+source_host_list =  json_registry_content['hosts']
+source_host = source_host_list.sort(key=lambda element: element['weight'],reverse=True)[0]
+print(source_host);
 
 
 
 #PARSE MODULE VERSE TO WORDS BY STRONG
+
+
+
+
 
 
 
