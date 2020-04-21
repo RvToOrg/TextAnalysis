@@ -26,3 +26,8 @@ INSIDE PY3 CONTAINER NEXT COMMANDS ALLOWED
 3. Parse bible verses to words
 
     To parse module verses to word use `python3 import/get_parsed_words.py -m MODULE_NAME`
+
+
+**To connect to database that contains loaded module and parsed words
+use connection described in `_tools/docker/README`**
+
