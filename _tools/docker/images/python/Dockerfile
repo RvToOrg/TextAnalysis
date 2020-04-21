@@ -8,6 +8,5 @@ RUN mkdir -p /var/app
 WORKDIR /var/app
 
 COPY ./requirements.txt /tmp/
-COPY ./.pgpass /root/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 

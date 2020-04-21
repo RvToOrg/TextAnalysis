@@ -2,6 +2,8 @@ import getopt, sys, os
 import requests, zipfile
 import json
 from pathlib import Path
+import psycopg2
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 json_registry_file = './import/registry/registry.json'
 modules_target = './import/modules'
@@ -38,6 +40,8 @@ if module_name == '':
     print('Module name is required. Please use -m or --module to specify module name')
     sys.exit(2)
 
+
+reload = reload or not os.path.isfile(modules_target + '/'+ module_name + '.zip')
 
 # DOWNLOAD MODULE
 rfile = open(json_registry_file, 'r')
@@ -89,7 +93,32 @@ db_name = db_name.lower()
 print('Create and fill db {} from module {}'.format(db_name,module_name))
 
 # LOAD MODULE TO PGSQL
-os.system('echo "SELECT \'CREATE DATABASE {}\' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = \'{}\')\gexec" | {}'.format(db_name,db_name,pg_conn_string))
+# create database on plycopg2
+try:
+    connection = psycopg2.connect(user = db_configs['user'],
+                                  password = db_configs['pass'],
+                                  host = db_configs['host'],
+                                  port = db_configs['port'])
+    connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{}'".format(db_name))
+    exist = cursor.fetchone()
+    if not exist:
+        cursor.execute("CREATE DATABASE {}".format(db_name))
+
+    print ("Database created ", db_name)
+
+except (Exception, psycopg2.Error) as error :
+    print ("Error while connecting to PostgreSQL", error)
+finally:
+    #closing database connection.
+        if(connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
+
+# os.system('echo "SELECT \'CREATE DATABASE {}\' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = \'{}\')\gexec" | {}'.format(db_name,db_name,pg_conn_string))
 
 Path("import/tmp").mkdir(parents=True, exist_ok=True)
 rfile = open(pg_loader_configs,'w')

@@ -4,7 +4,7 @@ services:
     build:  images/python
     volumes:
       - ../..:/var/app
-      - root_folder_py3_data:/root/.bash_history
+      - root_folder_py3_data:/root
     networks:
       - internal
     depends_on:

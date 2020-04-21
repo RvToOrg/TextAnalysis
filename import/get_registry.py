@@ -6,8 +6,12 @@ import json
 short_options = "r"
 long_options = ["reload"]
 
+zip_file_target = './import/registry/registry.zip'
+zip_registry_extract_target = './import/registry'
+json_registry_file = './import/registry/registry.json'
 
-reload = False
+cache_registry_file_exist = os.path.isfile(json_registry_file)
+reload = not cache_registry_file_exist
 full_cmd_arguments = sys.argv
 argument_list = full_cmd_arguments[1:]
 
@@ -23,20 +27,6 @@ for current_argument, current_value in arguments:
     if current_argument in ("-r", "--reload"):
         reload = True
         print("Reload registry from source")
-
-
-zip_file_target = './import/registry/registry.zip'
-zip_registry_extract_target = './import/registry'
-json_registry_file = './import/registry/registry.json'
-cache_registry_file_exist = False
-
-try:
-    f = open(json_registry_file)
-    cache_registry_file_exist=True
-except IOError:
-    print("No registry found in cache")
-finally:
-    f.close()
 
 
 if reload:
