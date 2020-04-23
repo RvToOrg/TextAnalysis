@@ -1,6 +1,0 @@
-{
-  "host": "rev_pgsql",
-  "port": "5432",
-  "user": "rev_user",
-  "pass": "rev_pass"
-}
