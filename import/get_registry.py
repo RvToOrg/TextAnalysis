@@ -6,9 +6,9 @@ import json
 short_options = "r"
 long_options = ["reload"]
 
-zip_file_target = './import/registry/registry.zip'
-zip_registry_extract_target = './import/registry'
-json_registry_file = './import/registry/registry.json'
+zip_file_target = './import/registr/registr.zip'
+zip_registry_extract_target = './import/registr'
+json_registry_file = './import/registr/registr.json'
 
 cache_registry_file_exist = os.path.isfile(json_registry_file)
 reload = not cache_registry_file_exist
@@ -26,7 +26,7 @@ except getopt.error as err:
 for current_argument, current_value in arguments:
     if current_argument in ("-r", "--reload"):
         reload = True
-        print("Reload registry from source")
+        print("Reload registr from source")
 
 
 if reload:
@@ -52,7 +52,7 @@ if reload:
         response = requests.get(url[i])
 
     if not response.ok:
-        print('Unable to load registry. Please contact administrator')
+        print('Unable to load registr. Please contact administrator')
         sys.exit(2)
 
     #UNZIP REGISTRY

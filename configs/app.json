@@ -1,0 +1,27 @@
+{
+  "import": {
+    "fs": {
+      "core": "./import",
+      "tmp": "./tmp/import",
+      "module_parsed": "{tmp}/parsed/{provider}/{module_name}.csv",
+      "providers_folder": "{tmp}/providers",
+      "trash": "./tmp/trash"
+    },
+    "providers": {
+      "mbbl": {
+        "fs": {
+          "registry":"{providers_folder}/registry",
+          "zip":"{providers_folder}/originals"
+        }
+      },
+      "bbqt": null,
+      "bbzm": null,
+      "prepared_csv": null
+    }
+  },
+  "module_name_replace_symbols": {
+    "-": "_MM_",
+    "+": "_PP_",
+    "'": "_PS_"
+  }
+}

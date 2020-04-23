@@ -5,6 +5,4 @@ out
 gen
 .idea/
 import/modules
-import/registry
-import/tmp
 tmp

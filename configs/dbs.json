@@ -1,0 +1,14 @@
+{
+  "dbs": {
+    "main": {
+      "host": "rev_pgsql",
+      "port": "5432",
+      "user": "rev_user",
+      "pass": "rev_pass",
+      "dbs": [
+        "text_analysis_db",
+        "text_analysis_test_db"
+      ]
+    }
+  }
+}

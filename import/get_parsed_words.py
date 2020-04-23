@@ -39,7 +39,7 @@ for s in replace:
 db_name = db_name.lower()
 print('DB used '+db_name)
 
-db_configs = './import/configs/db_config.json'
+db_configs = './import/configs/dbs.json'
 db_configs = json.loads(open(db_configs,'r').read().encode().decode('utf-8-sig'))
 
 

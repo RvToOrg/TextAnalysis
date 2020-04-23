@@ -5,11 +5,11 @@ from pathlib import Path
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-json_registry_file = './import/registry/registry.json'
+json_registry_file = './import/registr/registr.json'
 modules_target = './import/modules'
 pg_loader_configs = './import/tmp/pg_mod.load'
 module_name_replace_symbols_configs = './import/configs/module_name_replace_symbols.json'
-db_configs = './import/configs/db_config.json'
+db_configs = './import/configs/dbs.json'
 db_configs = json.loads(open(db_configs,'r').read().encode().decode('utf-8-sig'))
 
 # GET NAME OF MODULE FROM PARAMS
@@ -50,7 +50,7 @@ modules_list = json_registry_content['downloads']
 module = [x for x in modules_list if x['abr'] == module_name]
 
 if not module:
-    print('Specified module not found in registry')
+    print('Specified module not found in registr')
     sys.exit(2)
 elif len(module) > 1:
     print('Specified module not unique')
